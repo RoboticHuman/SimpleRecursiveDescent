@@ -1,13 +1,13 @@
 /*
 <program>		-> <type-specifier> ID OPENP <params> CLOSEP OPENB <declaration-list> <compound-statement> CLOSEB
-<declaration-list>	-> <declaration> { <declaration> }
-<declaration>		-> <var-declaration>
-<var-declaration>	-> <type-specifier> ID [ OPENSB NUM CLOSESB ] DELIM
-<type-specifier>	-> INT | VOID | FLOAT
+--<declaration-list>	-> <declaration> { <declaration> }
+--<declaration>		-> <var-declaration>
+--<var-declaration>	-> <type-specifier> ID [ OPENSB NUM CLOSESB ] DELIM
+--<type-specifier>	-> INT | VOID | FLOAT
 <params>		-> <param-list> | VOID
-<param-list>		-> <param> { COMMA <param> }
-<param>			-> <type-specifier> ID [ OPENSB CLOSESB ]
-<compound-stmt>		-> OPENB <statement-list> CLOSEB
+--<param-list>		-> <param> { COMMA <param> }
+--<param>			-> <type-specifier> ID [ OPENSB CLOSESB ]
+--<compound-stmt>		-> OPENB <statement-list> CLOSEB
 <statement-list>	-> { <statement> }
 <statement>		-> <assignment-stmt> | <compound-stmt> | <selection-stmt> | <iteration-stmt>
 <selection-stmt>	-> IF OPENP <expression> CLOSEP <statement> [ ELSE <statement> ]
