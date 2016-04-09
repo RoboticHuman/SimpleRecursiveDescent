@@ -11,24 +11,28 @@
 <statement-list>	-> { <statement> }
 <statement>		-> <assignment-stmt> | <compound-stmt> | <selection-stmt> | <iteration-stmt>
 <selection-stmt>	-> IF OPENP <expression> CLOSEP <statement> [ ELSE <statement> ]
-<iteration-stmt>	-> WHILE OPENP <expression> CLOSEP <statement>
-<assignment-stmt>	-> <var> ASSIGNOP <expression>
-<var>			-> ID [ OPENSB <expression> CLOSESB ]
-<expression>		-> <additive-expression> { <relop> <additive-expression> }
-<relop>			-> LTE | LT | GT | GTE | EE | NE
-<additive-expression>	-> <term> { <addop> <term> }
-<addop>			-> PLUS | MINUS
-<term>			-> <factor> { <mulop> <factor> }
-<mulop>			-> TIMES | DIVIDE
-<factor>		-> OPENP <expression> CLOSEP | <var> | NUM
+--<iteration-stmt>	-> WHILE OPENP <expression> CLOSEP <statement>
+--<assignment-stmt>	-> <var> ASSIGNOP <expression>
+--<var>			-> ID [ OPENSB <expression> CLOSESB ]
+--<expression>		-> <additive-expression> { <relop> <additive-expression> }
+--<relop>			-> LTE | LT | GT | GTE | EE | NE
+--<additive-expression>	-> <term> { <addop> <term> }
+--<addop>			-> PLUS | MINUS
+--<term>			-> <factor> { <mulop> <factor> }
+--<mulop>			-> TIMES | DIVIDE
+--<factor>		-> OPENP <expression> CLOSEP | <var> | NUM
 */
 #include "Scanner.h"
+#include "LiteralNode.h"
+#include "IdentifierNode.h"
+#include "Treenode.h"
 #include <string>
 using namespace std;
 class Parser
 {
 private:
   Treenode * syntaxtreeRoot;
+  Token token;
   Scanner scanner;
   Treenode * parseProgram();
   Treenode * parseDeclarationList();
@@ -52,6 +56,7 @@ private:
   Treenode * parseTerm();
   Treenode * parseMulop();
   Treenode * parseFactor();
+  void match(Token expectedToken);
 
 public:
   void parse();
