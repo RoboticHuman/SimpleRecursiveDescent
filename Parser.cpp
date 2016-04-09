@@ -40,8 +40,10 @@ Treenode* Parser::parseAssignmentStmt()
   return left;
 }
 
+//--<var>     -> ID [ OPENSB <expression> CLOSESB ]
 Treenode* Parser::parseVar()
 {
+
   Treenode* left, *node; node = new ArrayAccess();
   left = new IdentifierNode(token);
   match(TokenType::ID);
@@ -131,6 +133,7 @@ Treenode* Parser::parseFactor()
     return SyntaxTree();
 }
 
+
 //<relop>			-> LTE | LT | GT | GTE | EE | NE
 Treenode* Parser::parseRelop()
 {
@@ -207,3 +210,83 @@ Treenode* Parser::parseDeclaration()
 {
   return parsevarDeclaration();
 }
+
+
+
+
+
+
+
+
+Treenode* Parser::parseTypeSpecifier(){
+
+  if (token.getType() == TokenType ::INT || token.getType() == TokenType ::FLOAT ||token.getType() == TokenType ::VOID ){
+    Treenode* literalNode = new literalNode(token);
+    match(token.getType);
+    return literalNode;
+  }
+}
+
+//<params>    -> <param-list> | VOID
+Treenode* Parser::parseParams(){
+
+  // to be done later
+}
+
+
+//<param-list>    -> <param> { COMMA <param> }
+Treenode* Parser::parseParamList(){
+
+  Treenode* left, *node;
+  left = parseParam():
+  while (token.getType == TokenType::COMMA){
+    match(token.getType);
+    node = delimOperator();
+    node->left = left;
+    node -> right = parseParam();
+    left = node;
+  }
+  return left;
+
+}
+
+//<param>     -> <type-specifier> ID [ OPENSB CLOSESB ]
+Treenode* Parser::parseParam(){
+  Treenode* left = parseTypeSpecifier();
+  Treenode* node = new IdentifierNode(token);
+  match(TokenType::ID);
+
+  node->left = left;
+  node->right = nullptr;
+
+
+  if (token.getType == TokenType :: OPENSB){
+      match(TokenType::OPENSB);
+      match(TokenType::CLOSESB);
+
+  }
+
+  left = node;
+  return left;
+}
+
+/*
+
+--<additive-expression> -> <term> { <addop> <term> }
+Treenode* Parser::parseAdditiveExpr()
+{
+  Treenode* left, *node;
+  left = parseTerm();
+  while(token.getType()==TokenType::PLUS || token.getType()==TokenType::MINUS)
+  {
+    node = parseAddop();
+    node->left = left;
+    node->right = parseTerm();
+    left = node;
+  }
+  return left;
+}
+
+*/
+
+
