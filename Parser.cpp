@@ -22,8 +22,8 @@ Treenode* Parser::parseSelectionStmt()
   Treenode* node = parseStmt();
   if(token.getType() == TokenType::ELSE)
   {
+    Ifnode->right = new ThenElse(token);
     match(TokenType::ELSE);
-    Ifnode->right = new ThenElse("else");
     Ifnode->right->left = node;
     Ifnode->right->right = parseStmt();
   }
@@ -35,6 +35,48 @@ void Parser::match(Token expectedToken)
 {
   if(token==expectedToken)
     token = Scanner.getNextToken();
+  else
+    return SyntaxError();
+}
+
+Treenode* Parser::parseStmtList()
+{
+  Treenode *node = new DummyNode();
+  Treenode* left = node;
+  while(
+    token.getType() == TokenType::ID
+    || token.getType() == TokenType::OPENB
+    || token.getType() == TokeType::IF
+    || token.getType() == TokenType::WHILE
+  )
+  {
+    node->right = parseStmt();
+    node->left = new DummyNode();
+    node = node->left;
+  }
+
+  return left;
+}
+
+Treenode* Parser::parseStmt()
+{
+  Treenode* node;
+  if(token.getType() == TokenType::ID)
+  {
+    node = parseAssignmentStmt();
+  }
+  else if(token.getType() == TokenType::OPENB)
+  {
+    node = parseCompoundStmt();
+  }
+  else if(token.getType() == TokenType::IF)
+  {
+    node = parseSelectionStmt();
+  }
+  else if(token.getType() == TokenType::WHILE)
+  {
+    node = parseIterationStmt();
+  }
   else
     return SyntaxError();
 }

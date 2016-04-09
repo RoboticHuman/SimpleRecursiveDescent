@@ -8,8 +8,8 @@
 <param-list>		-> <param> { COMMA <param> }
 <param>			-> <type-specifier> ID [ OPENSB CLOSESB ]
 <compound-stmt>		-> OPENB <statement-list> CLOSEB
-<statement-list>	-> { <statement> }
-<statement>		-> <assignment-stmt> | <compound-stmt> | <selection-stmt> | <iteration-stmt>
+--<statement-list>	-> { <statement> }
+--<statement>		-> <assignment-stmt> | <compound-stmt> | <selection-stmt> | <iteration-stmt>
 --<selection-stmt>	-> IF OPENP <expression> CLOSEP <statement> [ ELSE <statement> ]
 --<iteration-stmt>	-> WHILE OPENP <expression> CLOSEP <statement>
 --<assignment-stmt>	-> <var> ASSIGNOP <expression>
