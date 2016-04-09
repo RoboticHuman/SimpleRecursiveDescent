@@ -8,7 +8,7 @@ PlusNode
 MinusNode
 TimesNode
 DivideNode
-IdNode
+IdentifierNode
 TypeSpecifierNode
 ArrayAccessNode
 DelimNode

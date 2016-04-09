@@ -10,6 +10,27 @@ Parser::parseProgram()
 
 }
 
+Treenode* Parser::parseSelectionStmt()
+{
+  Treenode* left, *Ifnode;
+  Ifnode = new IfNode(token);
+  match(TokenType::IF);
+  match(TokenType::OPENP);
+  left = parseExpression();
+  match(TokenType::CLOSEP);
+  Ifnode->left = left;
+  Treenode* node = parseStmt();
+  if(token.getType() == TokenType::ELSE)
+  {
+    match(TokenType::ELSE);
+    Ifnode->right = new ThenElse("else");
+    Ifnode->right->left = node;
+    Ifnode->right->right = parseStmt();
+  }
+  left = Ifnode;
+  return left;
+}
+
 void Parser::match(Token expectedToken)
 {
   if(token==expectedToken)
@@ -20,12 +41,16 @@ void Parser::match(Token expectedToken)
 
 Treenode* Parser::parseIterationStmt()
 {
-  Treenode* left;
+  Treenode* left, *node;
+  node = new Whilenode(token);
   match(TokenType::WHILE);
   match(TokenType::OPENP);
   left = parseExpression();
   match(TokenType::CLOSEP);
-
+  node ->left = left;
+  node->right = parseStmt();
+  left = node;
+  return left;
 }
 
 Treenode* Parser::parseAssignmentStmt()
@@ -140,32 +165,32 @@ Treenode* Parser::parseRelop()
   Treenode* node;
   if(token.getType() == TokenType::LTE)
   {
-    node = new LTENode;
+    node = new LteNode;
     match(TokenType::LTE);
   }
   else if(token.getType() == TokenType::LT)
   {
-    node = new LTNode;
+    node = new LtNode;
     match(TokenType::LT);
   }
   else if(token.getType() == TokenType::GT)
   {
-    node = new GTNode;
+    node = new GtNode;
     match(TokenType::GT);
   }
   else if(token.getType() == TokenType::GTE)
   {
-    node = new GTENode;
+    node = new GteNode;
     match(TokenType::GTE);
   }
   else if(token.getType() == TokenType::EE)
   {
-    node = new EENode;
+    node = new EeNode;
     match(TokenType::EE);
   }
   else if(token.getType() == TokenType::NE)
   {
-    node = new NENode;
+    node = new NeNode;
     match(TokenType::NE);
   }
   else return SyntaxError();
@@ -176,12 +201,12 @@ Treenode* Parser::parseAddop()
 {
   Treenode* node;
   if(token.getType() == TokenType::PLUS){
-    node = new AdditionNode;
+    node = new PlusNode;
     match(TokenType::PLUS);
   }
   else if(token.getType() == TokenType::MINUS)
   {
-    node = new SubtractionNode;
+    node = new MinusNode;
     match(TokenType::MINUS);
   }
   else
@@ -194,7 +219,7 @@ Treenode* Parser::parseMulop()
   Treenode* node;
   if(token.getType() == TokenType::TIMES)
   {
-    node =  new MultiplicationNode;
+    node =  new TimesNode;
     match(TokenType::TIMES);
   }
   else if(token.getType() == TokenType::DIVIDE){
@@ -211,18 +236,11 @@ Treenode* Parser::parseDeclaration()
   return parsevarDeclaration();
 }
 
-
-
-
-
-
-
-
 Treenode* Parser::parseTypeSpecifier(){
 
   if (token.getType() == TokenType ::INT || token.getType() == TokenType ::FLOAT ||token.getType() == TokenType ::VOID ){
     Treenode* literalNode = new literalNode(token);
-    match(token.getType);
+    match(token.getType());
     return literalNode;
   }
 }
@@ -239,8 +257,8 @@ Treenode* Parser::parseParamList(){
 
   Treenode* left, *node;
   left = parseParam():
-  while (token.getType == TokenType::COMMA){
-    match(token.getType);
+  while (token.getType() == TokenType::COMMA){
+    match(token.getType());
     node = delimOperator();
     node->left = left;
     node -> right = parseParam();
@@ -260,7 +278,7 @@ Treenode* Parser::parseParam(){
   node->right = nullptr;
 
 
-  if (token.getType == TokenType :: OPENSB){
+  if (token.getType() == TokenType :: OPENSB){
       match(TokenType::OPENSB);
       match(TokenType::CLOSESB);
 
@@ -288,5 +306,3 @@ Treenode* Parser::parseAdditiveExpr()
 }
 
 */
-
-

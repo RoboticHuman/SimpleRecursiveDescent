@@ -10,7 +10,7 @@
 <compound-stmt>		-> OPENB <statement-list> CLOSEB
 <statement-list>	-> { <statement> }
 <statement>		-> <assignment-stmt> | <compound-stmt> | <selection-stmt> | <iteration-stmt>
-<selection-stmt>	-> IF OPENP <expression> CLOSEP <statement> [ ELSE <statement> ]
+--<selection-stmt>	-> IF OPENP <expression> CLOSEP <statement> [ ELSE <statement> ]
 --<iteration-stmt>	-> WHILE OPENP <expression> CLOSEP <statement>
 --<assignment-stmt>	-> <var> ASSIGNOP <expression>
 --<var>			-> ID [ OPENSB <expression> CLOSESB ]
@@ -36,7 +36,7 @@ private:
   Token token;
   Scanner scanner;
   Treenode * parseProgram(); // DON
-  Treenode * parseDeclarationList(); 
+  Treenode * parseDeclarationList();
   Treenode * parseDeclaration(); // DON
   Treenode * parsevarDeclaration();
   Treenode * parseTypeSpecifier(); // ZARE3
