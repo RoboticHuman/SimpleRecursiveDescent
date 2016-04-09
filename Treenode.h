@@ -27,7 +27,7 @@ enum class TokenType : std::uint8_t{
   EPSILON,
   NUM,
   ASSIGN
-}
+};
 
 class Token
 {

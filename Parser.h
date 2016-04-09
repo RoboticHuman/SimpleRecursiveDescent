@@ -26,6 +26,7 @@
 #include "LiteralNode.h"
 #include "IdentifierNode.h"
 #include "Treenode.h"
+#include "delimOperator.h"
 #include <string>
 using namespace std;
 class Parser
@@ -34,28 +35,28 @@ private:
   Treenode * syntaxtreeRoot;
   Token token;
   Scanner scanner;
-  Treenode * parseProgram();
-  Treenode * parseDeclarationList();
-  Treenode * parseDeclaration();
+  Treenode * parseProgram(); // DON
+  Treenode * parseDeclarationList(); 
+  Treenode * parseDeclaration(); // DON
   Treenode * parsevarDeclaration();
-  Treenode * parseTypeSpecifier();
-  Treenode * parseParams();
-  Treenode * parseParamList();
+  Treenode * parseTypeSpecifier(); // ZARE3
+  Treenode * parseParams(); // ZARE3
+  Treenode * parseParamList(); // ZARE3
   Treenode * parseParam();
   Treenode * parseCompoundStmt();
   Treenode * parseStmtList();
   Treenode * parseStmt();
   Treenode * parseSelectionStmt();
-  Treenode * parseIterationStmt();
-  Treenode * parseAssignmentStmt();
-  Treenode * parseVar();
-  Treenode * parseExpression();
-  Treenode * parseRelop();
-  Treenode * parseAdditiveExpr();
-  Treenode * parseAddop();
-  Treenode * parseTerm();
-  Treenode * parseMulop();
-  Treenode * parseFactor();
+  Treenode * parseIterationStmt(); // DON
+  Treenode * parseAssignmentStmt(); // DON
+  Treenode * parseVar(); // DON
+  Treenode * parseExpression(); // DON
+  Treenode * parseRelop(); // DON
+  Treenode * parseAdditiveExpr(); // DON
+  Treenode * parseAddop(); // DON
+  Treenode * parseTerm(); // DON
+  Treenode * parseMulop(); // DON
+  Treenode * parseFactor(); // DON
   void match(Token expectedToken);
 
 public:
