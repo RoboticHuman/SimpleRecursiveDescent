@@ -28,7 +28,7 @@ enum class TokenType : std::uint8_t{
   NUM,
   ASSIGN,
   WHILE
-}
+};
 
 class Token
 {
