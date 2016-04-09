@@ -10,7 +10,7 @@ TimesNode
 DivideNode
 IdentifierNode
 TypeSpecifierNode
-ArrayAccessNode
+ArrayNode
 DelimNode
 CommaNode
 NumNode

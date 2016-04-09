@@ -5,49 +5,29 @@ Parser::Parser(string filePath): scanner(filePath)
 
 }
 
-/*
-
-Treenode * parseProgram(); // DON
-  Treenode * parseDeclarationList();
-  Treenode * parseDeclaration(); // DON
-  Treenode * parsevarDeclaration();
-  Treenode * parseTypeSpecifier(); // ZARE3
-  Treenode * parseParams(); // ZARE3
-  Treenode * parseParamList(); // ZARE3
-  Treenode * parseParam();
-  Treenode * parseCompoundStmt();
-  Treenode * parseStmtList();
-  Treenode * parseStmt();
-  Treenode * parseSelectionStmt();
-  Treenode * parseIterationStmt(); // DON
-  Treenode * parseAssignmentStmt(); // DON
-  Treenode * parseVar(); // DON
-  Treenode * parseExpression(); // DON
-  Treenode * parseRelop(); // DON
-  Treenode * parseAdditiveExpr(); // DON
-  Treenode * parseAddop(); // DON
-  Treenode * parseTerm(); // DON
-  Treenode * parseMulop(); // DON
-  Treenode * parseFactor(); // DON
-
-  */
 Parser::parseProgram()
 {
 
 }
 
+//<declaration-list>  -> <declaration> { <declaration> }
 Treenode* Parser::parseDeclarationList(){
 
   Treenode* left;
   Treenode* node;
 
-  left =  parseDeclaration();
+  if (token.getType() == TokenType ::INT || token.getType() == TokenType ::FLOAT ||token.getType() == TokenType ::VOID ){
+    node = new DummyNode();
+    node->right = parseDeclaration();
+    node->left=new DummyNode();
+    left = node;
+    node = node->left;
+  }
 
   while (token.getType() == TokenType ::INT || token.getType() == TokenType ::FLOAT ||token.getType() == TokenType ::VOID ){
-    node =  new dummyNode();
-    node->left = left;
     node->right = parseDeclaration();
-    left = node;
+    node->left=new DummyNode();
+    node = node->left;
 
   }
   return left;
@@ -60,6 +40,7 @@ Treenode* Parser::parseDeclaration()
   return parsevarDeclaration();
 }
 
+//<var-declaration> -> <type-specifier> ID [ OPENSB NUM CLOSESB ] DELIM
 Treenode* Parser::parsevarDeclaration(){
 
   Treenode* node;
@@ -75,7 +56,7 @@ Treenode* Parser::parsevarDeclaration(){
     node->right = new DummyNode();
     match(TokenType::OPENSB);
     if (token.getType() == TokenType::NUM)
-      node->right->left = new ArrayAccessNode(token);
+      node->right->left = new ArrayAccess(token);
     match(TokenType::NUM);
     match(TokenType::CLOSESB);
     if (token.getType() == TokenType::DELIM)
@@ -96,13 +77,14 @@ Treenode* Parser::parsevarDeclaration(){
 
 }
 
+//--<type-specifier>  -> INT | VOID | FLOAT
 Treenode* Parser::parseTypeSpecifier(){
 
   if (token.getType() == TokenType ::INT || token.getType() == TokenType ::FLOAT ||token.getType() == TokenType ::VOID ){
-    Treenode* literalNode = new literalNode(token);
-    match(token.getType);
-    return literalNode;
+    Treenode* node = new TypeSpecifierNode(token);
   }
+  match(token.getType());
+  return node;
 }
 
 Treenode* Parser::parseParams(){
@@ -110,33 +92,37 @@ Treenode* Parser::parseParams(){
   // TODO
 }
 
+//<param-list>    -> <param> { COMMA <param> }
 Treenode* Parser::parseParamList(){
 
   Treenode* left, *node;
-  left = parseParam():
-  while (token.getType == TokenType::COMMA){
-    match(token.getType);
-    node = delimOperator();
+  left = parseParam();
+  while(token.getType()==TokenType::COMMA)
+  {
+    node = new DelimNode(token.getType());
+    match(TokenType::COMMA);
     node->left = left;
-    node -> right = parseParam();
+    node->right = parseParam();
     left = node;
   }
   return left;
 
 }
-
+//--<param>     -> <type-specifier> ID [ OPENSB CLOSESB ]
 Treenode* Parser::parseParam(){
   Treenode* left = parseTypeSpecifier();
   Treenode* node = new IdentifierNode(token);
   match(TokenType::ID);
 
   node->left = left;
-  node->right = nullptr;
+
+  node->right = new DummyNode();
 
 
   if (token.getType == TokenType :: OPENSB){
       match(TokenType::OPENSB);
       match(TokenType::CLOSESB);
+      node->right = new ArrayAccess();
 
   }
 
@@ -145,8 +131,8 @@ Treenode* Parser::parseParam(){
 }
 
 
-
-Treenode* Parser::parseCompoundStatement(){
+//--<compound-stmt>   -> OPENB <statement-list> CLOSEB
+Treenode* Parser::parseCompoundStmt(){
 
   Treenode* node;
   match(TokenType::OPENB);
@@ -156,6 +142,7 @@ Treenode* Parser::parseCompoundStatement(){
   return node;
 }
 
+//<statement-list>  -> { <statement> }
 Treenode* Parser::parseStmtList()
 {
   Treenode *node = new DummyNode();
@@ -175,31 +162,35 @@ Treenode* Parser::parseStmtList()
   return left;
 }
 
-
+//<statement>   -> <assignment-stmt> | <compound-stmt> | <selection-stmt> | <iteration-stmt>
 Treenode* Parser::parseStmt()
 {
   Treenode* node;
   if(token.getType() == TokenType::ID)
   {
     node = parseAssignmentStmt();
+    return node;
   }
   else if(token.getType() == TokenType::OPENB)
   {
     node = parseCompoundStmt();
+    return node;
   }
   else if(token.getType() == TokenType::IF)
   {
     node = parseSelectionStmt();
+    return node;
   }
   else if(token.getType() == TokenType::WHILE)
   {
     node = parseIterationStmt();
+    return node;
   }
   else
-    return SyntaxError();
+    throw SyntaxError();
 }
 
-
+//<selection-stmt>  -> IF OPENP <expression> CLOSEP <statement> [ ELSE <statement> ]
 Treenode* Parser::parseSelectionStmt()
 {
   Treenode* left, *Ifnode;
@@ -217,10 +208,15 @@ Treenode* Parser::parseSelectionStmt()
     Ifnode->right->left = node;
     Ifnode->right->right = parseStmt();
   }
+  else{
+
+    Ifnode->right = node;
+  }
   left = Ifnode;
   return left;
 }
 
+//<iteration-stmt>    -> WHILE OPENP <expression> CLOSEP <statement>
 Treenode* Parser::parseIterationStmt()
 {
   Treenode* left, *node;
@@ -235,11 +231,12 @@ Treenode* Parser::parseIterationStmt()
   return left;
 }
 
+//<assignment-stmt>   -> <var> ASSIGNOP <expression>
 Treenode* Parser::parseAssignmentStmt()
 {
   Treenode* left, *node;
   left = parseVar();
-  node = new AssignmentOperator(token);
+  node = new AssignNode(token);
   match(TokenType::ASSIGN);
   node->left = left;
   node->right = parseExpression();
@@ -247,23 +244,27 @@ Treenode* Parser::parseAssignmentStmt()
   return left;
 }
 
+//<var>         -> ID [ OPENSB <expression> CLOSESB ]
 Treenode* Parser::parseVar()
 {
 
-  Treenode* left, *node; node = new ArrayAccess();
+  Treenode* left, *node;
   left = new IdentifierNode(token);
   match(TokenType::ID);
   if(token.getType() == TokenType::OPENSB)
   {
+    node = new ArrayNode();
     match(TokenType::OPENSB);
     node->left = left;
     node->right = parseExpression();
     match(TokenType::CLOSESB);
     left = node;
   }
+
   return left;
 }
 
+//<expression>      -> <additive-expression> { <relop> <additive-expression> }
 
 Treenode* Parser::parseExpression()
 {
@@ -323,7 +324,7 @@ Treenode* Parser::parseRelop()
   else return SyntaxError();
   return node;
 }
-
+//--<additive-expression> -> <term> { <addop> <term> }
 Treenode* Parser::parseAdditiveExpr()
 {
   Treenode* left, *node;
@@ -338,6 +339,7 @@ Treenode* Parser::parseAdditiveExpr()
   return left;
 }
 
+//<addop>         -> PLUS | MINUS
 Treenode* Parser::parseAddop()
 {
   Treenode* node;
@@ -351,10 +353,11 @@ Treenode* Parser::parseAddop()
     match(TokenType::MINUS);
   }
   else
-    return SyntaxTree;
+    return SyntaxError();
   return node;
 }
 
+//<term>          -> <factor> { <mulop> <factor> }
 Treenode* Parser::parseTerm()
 {
   Treenode* left, *node;
@@ -368,7 +371,7 @@ Treenode* Parser::parseTerm()
   }
   return left;
 }
-
+//<mulop>         -> TIMES | DIVIDE
 Treenode* Parser::parseMulop()
 {
   Treenode* node;
@@ -385,7 +388,7 @@ Treenode* Parser::parseMulop()
     return SyntaxError();
   return node;
 }
-
+//<factor>        -> OPENP <expression> CLOSEP | <var> | NUM
 Treenode* Parser::parseFactor()
 {
   if(token.getType() == TokenType::OPENP)
@@ -393,23 +396,23 @@ Treenode* Parser::parseFactor()
     Treenode* exprTree;
     match(TokenType::OPENP);
     exprTree =  parseExpression();
+    match(TokenType::CLOSEP);
     return exprTree;
   }
   else if(token.getType() == TokenType::ID)
   {
     Treenode* varTree;
-    match(TokenType::ID)
     varTree = parseVar();
     return varTree;
   }
   else if(token.getType() == TokenType::NUM)
   {
-    Treenode *literalNode =  new literalNode(token);
+    Treenode *node =  new NumNode(token);
     match(TokenType::NUM);
-    return literalNode;
+    return node;
   }
   else
-    return SyntaxTree();
+    return SyntaxError();
 }
 
 void Parser::match(Token expectedToken)
