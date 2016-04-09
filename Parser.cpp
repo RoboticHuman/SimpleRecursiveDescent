@@ -37,6 +37,7 @@ Treenode* Parser::parseAssignmentStmt()
 //--<var>     -> ID [ OPENSB <expression> CLOSESB ]
 Treenode* Parser::parseVar()
 {
+
   Treenode* left, *node; node = new ArrayAccess();
   left = new IdentifierNode(token);
   match(TokenType::ID);
@@ -243,6 +244,25 @@ Treenode* Parser::parseParamList(){
 
 }
 
+//<param>     -> <type-specifier> ID [ OPENSB CLOSESB ]
+Treenode* Parser::parseParam(){
+  Treenode* left = parseTypeSpecifier();
+  Treenode* node = new IdentifierNode(token);
+  match(TokenType::ID);
+
+  node->left = left;
+  node->right = nullptr;
+
+
+  if (token.getType == TokenType :: OPENSB){
+      match(TokenType::OPENSB);
+      match(TokenType::CLOSESB);
+
+  }
+
+  left = node;
+  return left;
+}
 
 /*
 
