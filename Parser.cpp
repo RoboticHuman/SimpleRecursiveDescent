@@ -20,6 +20,12 @@ void Parser::match(Token expectedToken)
 
 Treenode* Parser::parseIterationStmt()
 {
+  Treenode* left;
+  match(TokenType::WHILE);
+  match(TokenType::OPENP);
+  left = parseExpression();
+  match(TokenType::CLOSEP);
+
 }
 
 Treenode* Parser::parseAssignmentStmt()

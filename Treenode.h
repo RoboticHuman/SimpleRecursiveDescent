@@ -26,7 +26,8 @@ enum class TokenType : std::uint8_t{
   COMMA,
   EPSILON,
   NUM,
-  ASSIGN
+  ASSIGN,
+  WHILE
 }
 
 class Token
