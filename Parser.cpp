@@ -5,8 +5,40 @@ Parser::Parser(string filePath): scanner(filePath)
 
 }
 
+//<program>       -> <type-specifier> ID OPENP <params> CLOSEP OPENB <declaration-list> <compound-statement> CLOSEB
 Parser::parseProgram()
 {
+  Treenode* node;
+  Treenode* entryNode = new DummyNode();
+  entryNode->left = new DummyNode();
+  entryNode->right = parseTypeSpecifier();
+
+  node = entryNode->left;
+
+  node->right = new IdentifierNode(token);
+  match(TokenType::ID);
+  node->left = new DummyNode();
+  node = node->left;
+
+
+  match(TokenType::OPENP);
+  node->right = parseParams();
+  match(TokenType::CLOSEP)
+  node->left = new DummyNode();
+  node = node->left;
+
+
+  match(TokenType::OPENB);
+  node->right = parseDeclarationList();
+  node->left = new DummyNode();
+  node = node->left;
+
+  node->left = new DummyNode();
+  node->right = parseCompoundStmt();
+  match(TokenType::CLOSEB);
+  node = node->left;
+
+  return entryNode;
 
 }
 
@@ -87,9 +119,20 @@ Treenode* Parser::parseTypeSpecifier(){
   return node;
 }
 
+//<params>        -> <param-list> | VOID
 Treenode* Parser::parseParams(){
 
   // TODO
+
+  if ( scanner.peakToken() == TokenType::ID){
+    Treenode* node = parseParamList();
+  }
+  else{
+    Treenode* node = TypeSpecifierNode(token);
+    match(TokenType::VOID);
+  }
+
+  return node;
 }
 
 //<param-list>    -> <param> { COMMA <param> }
@@ -418,7 +461,7 @@ Treenode* Parser::parseFactor()
 void Parser::match(Token expectedToken)
 {
   if(token==expectedToken)
-    token = Scanner.getNextToken();
+    token = scanner.getNextToken();
   else
     return SyntaxError();
 }
