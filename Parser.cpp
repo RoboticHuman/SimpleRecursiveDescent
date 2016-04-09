@@ -5,17 +5,34 @@ Parser::Parser(string filePath): scanner(filePath)
 
 }
 
-void Parser::match(Token expectedToken)
-{
-  if(token==expectedToken)
-    token = Scanner.getNextToken();
-  else
-    return SyntaxError();
-}
+/*
 
+Treenode * parseProgram(); // DON
+  Treenode * parseDeclarationList();
+  Treenode * parseDeclaration(); // DON
+  Treenode * parsevarDeclaration();
+  Treenode * parseTypeSpecifier(); // ZARE3
+  Treenode * parseParams(); // ZARE3
+  Treenode * parseParamList(); // ZARE3
+  Treenode * parseParam();
+  Treenode * parseCompoundStmt();
+  Treenode * parseStmtList();
+  Treenode * parseStmt();
+  Treenode * parseSelectionStmt();
+  Treenode * parseIterationStmt(); // DON
+  Treenode * parseAssignmentStmt(); // DON
+  Treenode * parseVar(); // DON
+  Treenode * parseExpression(); // DON
+  Treenode * parseRelop(); // DON
+  Treenode * parseAdditiveExpr(); // DON
+  Treenode * parseAddop(); // DON
+  Treenode * parseTerm(); // DON
+  Treenode * parseMulop(); // DON
+  Treenode * parseFactor(); // DON
+
+  */
 Parser::parseProgram()
 {
-
 
 }
 
@@ -37,11 +54,11 @@ Treenode* Parser::parseDeclarationList(){
 
 }
 
+
 Treenode* Parser::parseDeclaration()
 {
   return parsevarDeclaration();
 }
-
 
 Treenode* Parser::parsevarDeclaration(){
 
@@ -88,12 +105,10 @@ Treenode* Parser::parseTypeSpecifier(){
   }
 }
 
-
 Treenode* Parser::parseParams(){
 
   // TODO
 }
-
 
 Treenode* Parser::parseParamList(){
 
@@ -109,7 +124,6 @@ Treenode* Parser::parseParamList(){
   return left;
 
 }
-
 
 Treenode* Parser::parseParam(){
   Treenode* left = parseTypeSpecifier();
@@ -130,6 +144,8 @@ Treenode* Parser::parseParam(){
   return left;
 }
 
+
+
 Treenode* Parser::parseCompoundStatement(){
 
   Treenode* node;
@@ -140,17 +156,83 @@ Treenode* Parser::parseCompoundStatement(){
   return node;
 }
 
+Treenode* Parser::parseStmtList()
+{
+  Treenode *node = new DummyNode();
+  Treenode* left = node;
+  while(
+    token.getType() == TokenType::ID
+    || token.getType() == TokenType::OPENB
+    || token.getType() == TokeType::IF
+    || token.getType() == TokenType::WHILE
+  )
+  {
+    node->right = parseStmt();
+    node->left = new DummyNode();
+    node = node->left;
+  }
+
+  return left;
+}
 
 
+Treenode* Parser::parseStmt()
+{
+  Treenode* node;
+  if(token.getType() == TokenType::ID)
+  {
+    node = parseAssignmentStmt();
+  }
+  else if(token.getType() == TokenType::OPENB)
+  {
+    node = parseCompoundStmt();
+  }
+  else if(token.getType() == TokenType::IF)
+  {
+    node = parseSelectionStmt();
+  }
+  else if(token.getType() == TokenType::WHILE)
+  {
+    node = parseIterationStmt();
+  }
+  else
+    return SyntaxError();
+}
+
+
+Treenode* Parser::parseSelectionStmt()
+{
+  Treenode* left, *Ifnode;
+  Ifnode = new IfNode(token);
+  match(TokenType::IF);
+  match(TokenType::OPENP);
+  left = parseExpression();
+  match(TokenType::CLOSEP);
+  Ifnode->left = left;
+  Treenode* node = parseStmt();
+  if(token.getType() == TokenType::ELSE)
+  {
+    Ifnode->right = new ThenElse(token);
+    match(TokenType::ELSE);
+    Ifnode->right->left = node;
+    Ifnode->right->right = parseStmt();
+  }
+  left = Ifnode;
+  return left;
+}
 
 Treenode* Parser::parseIterationStmt()
 {
-  Treenode* left;
+  Treenode* left, *node;
+  node = new Whilenode(token);
   match(TokenType::WHILE);
   match(TokenType::OPENP);
   left = parseExpression();
   match(TokenType::CLOSEP);
-
+  node ->left = left;
+  node->right = parseStmt();
+  left = node;
+  return left;
 }
 
 Treenode* Parser::parseAssignmentStmt()
@@ -164,7 +246,6 @@ Treenode* Parser::parseAssignmentStmt()
   left = node;
   return left;
 }
-
 
 Treenode* Parser::parseVar()
 {
@@ -182,6 +263,7 @@ Treenode* Parser::parseVar()
   }
   return left;
 }
+
 
 Treenode* Parser::parseExpression()
 {
@@ -204,6 +286,44 @@ Treenode* Parser::parseExpression()
   return left;
 }
 
+//<relop>     -> LTE | LT | GT | GTE | EE | NE
+Treenode* Parser::parseRelop()
+{
+  Treenode* node;
+  if(token.getType() == TokenType::LTE)
+  {
+    node = new LteNode;
+    match(TokenType::LTE);
+  }
+  else if(token.getType() == TokenType::LT)
+  {
+    node = new LtNode;
+    match(TokenType::LT);
+  }
+  else if(token.getType() == TokenType::GT)
+  {
+    node = new GtNode;
+    match(TokenType::GT);
+  }
+  else if(token.getType() == TokenType::GTE)
+  {
+    node = new GteNode;
+    match(TokenType::GTE);
+  }
+  else if(token.getType() == TokenType::EE)
+  {
+    node = new EeNode;
+    match(TokenType::EE);
+  }
+  else if(token.getType() == TokenType::NE)
+  {
+    node = new NeNode;
+    match(TokenType::NE);
+  }
+  else return SyntaxError();
+  return node;
+}
+
 Treenode* Parser::parseAdditiveExpr()
 {
   Treenode* left, *node;
@@ -218,6 +338,23 @@ Treenode* Parser::parseAdditiveExpr()
   return left;
 }
 
+Treenode* Parser::parseAddop()
+{
+  Treenode* node;
+  if(token.getType() == TokenType::PLUS){
+    node = new PlusNode;
+    match(TokenType::PLUS);
+  }
+  else if(token.getType() == TokenType::MINUS)
+  {
+    node = new MinusNode;
+    match(TokenType::MINUS);
+  }
+  else
+    return SyntaxTree;
+  return node;
+}
+
 Treenode* Parser::parseTerm()
 {
   Treenode* left, *node;
@@ -230,6 +367,23 @@ Treenode* Parser::parseTerm()
     left = node;
   }
   return left;
+}
+
+Treenode* Parser::parseMulop()
+{
+  Treenode* node;
+  if(token.getType() == TokenType::TIMES)
+  {
+    node =  new TimesNode;
+    match(TokenType::TIMES);
+  }
+  else if(token.getType() == TokenType::DIVIDE){
+      node =  new DivideNode;
+      match(TokenType::DIVIDE);
+  }
+  else
+    return SyntaxError();
+  return node;
 }
 
 Treenode* Parser::parseFactor()
@@ -258,77 +412,12 @@ Treenode* Parser::parseFactor()
     return SyntaxTree();
 }
 
-
-//<relop>			-> LTE | LT | GT | GTE | EE | NE
-Treenode* Parser::parseRelop()
+void Parser::match(Token expectedToken)
 {
-  Treenode* node;
-  if(token.getType() == TokenType::LTE)
-  {
-    node = new LTENode;
-    match(TokenType::LTE);
-  }
-  else if(token.getType() == TokenType::LT)
-  {
-    node = new LTNode;
-    match(TokenType::LT);
-  }
-  else if(token.getType() == TokenType::GT)
-  {
-    node = new GTNode;
-    match(TokenType::GT);
-  }
-  else if(token.getType() == TokenType::GTE)
-  {
-    node = new GTENode;
-    match(TokenType::GTE);
-  }
-  else if(token.getType() == TokenType::EE)
-  {
-    node = new EENode;
-    match(TokenType::EE);
-  }
-  else if(token.getType() == TokenType::NE)
-  {
-    node = new NENode;
-    match(TokenType::NE);
-  }
-  else return SyntaxError();
-  return node;
-}
-
-Treenode* Parser::parseAddop()
-{
-  Treenode* node;
-  if(token.getType() == TokenType::PLUS){
-    node = new AdditionNode;
-    match(TokenType::PLUS);
-  }
-  else if(token.getType() == TokenType::MINUS)
-  {
-    node = new SubtractionNode;
-    match(TokenType::MINUS);
-  }
-  else
-    return SyntaxTree;
-  return node;
-}
-
-Treenode* Parser::parseMulop()
-{
-  Treenode* node;
-  if(token.getType() == TokenType::TIMES)
-  {
-    node =  new MultiplicationNode;
-    match(TokenType::TIMES);
-  }
-  else if(token.getType() == TokenType::DIVIDE){
-      node =  new DivideNode;
-      match(TokenType::DIVIDE);
-  }
+  if(token==expectedToken)
+    token = Scanner.getNextToken();
   else
     return SyntaxError();
-  return node;
 }
 
 

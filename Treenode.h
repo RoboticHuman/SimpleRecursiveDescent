@@ -4,6 +4,7 @@
 enum class TokenType : std::uint8_t{
   LTE = 1,
   LT ,
+  IF,
   GTE,
   GT,
   EE,
@@ -27,7 +28,8 @@ enum class TokenType : std::uint8_t{
   EPSILON,
   NUM,
   ASSIGN,
-  WHILE
+  WHILE,
+  ELSE
 };
 
 class Token
