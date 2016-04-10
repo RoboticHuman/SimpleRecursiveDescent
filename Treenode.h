@@ -1,7 +1,9 @@
 #pragma once
 #include <cstdint>
 
-enum class TokenType : std::uint8_t{
+using namespace std;
+
+enum class TokenType{
   LTE = 1,
   LT ,
   IF,
@@ -12,7 +14,7 @@ enum class TokenType : std::uint8_t{
   PLUS,
   MINUS,
   TIMES,
-  DIVIDE
+  DIVIDE,
   ID,
   VOID,
   FLOAT,
@@ -34,8 +36,10 @@ enum class TokenType : std::uint8_t{
 
 class Token
 {
+public:
   TokenType tok;
   int line, pos;
+  string lexeme;
 
 };
 
