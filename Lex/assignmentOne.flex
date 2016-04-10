@@ -15,10 +15,10 @@
 		int lineIdx;
 		int charIdx;
 	};
-	
+
 	struct Token
 	{
-		string tokenName;		
+		string tokenName;
 	};
 
 	vector<Error> errors;
@@ -34,6 +34,17 @@
 /*	Regular Expressions Definition	*/
 
 ALPHA		[a-zA-Z0-9_!=<>.{}()\[\]*+\-;#$ \t\n\r/]
+LTE "<="
+LT "<"
+GTE ">="
+GT ">"
+EE "=="
+NE "!="
+PLUS "+"
+MINUS "-"
+TIMES "*"
+DIVIDE "/"
+FLOAT [Ff][Ll][Oo][Aa][Tt]
 NOTALPHA	[^a-zA-Z0-9_!=<>.{}()\[\]*+\-;#$ \t\n\r/]
 ELSE		[Ee][Ll][Ss][Ee]
 IF			[Ii][Ff]
@@ -52,18 +63,18 @@ CLOSECOM	"*/"
 COMMENT		{OPENCOM}(.|[\n\r])*?{CLOSECOM}
 COMMA 		,
 DELIM 		;
-OPENCURLY 	"{"
-CLOSECURLY	"}"
-OPENSQUARE	"["
-CLOSESQUARE	"]"
-OPENBRACKET	"("
-CLOSBRACKET	")"
+OPENB 	"{"
+CLOSEB	"}"
+OPENSB	"["
+CLOSESB	"]"
+OPENP"("
+CLOSP	")"
 
-ADDOP		 "+"|"-"
+/*ADDOP		 "+"|"-"
 MULOP		 "*"|"/"
 CMPOP		 "<"|">"|"<="|">="
 ASSOP		 =
-
+*/
 
 %%
 			/*	OTHER	*/
@@ -73,32 +84,39 @@ ASSOP		 =
 
 			/*	TOKENS	*/
 
-{ELSE}		{if(!doesHaveBadComment) {token.tokenName="ELSE"; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{IF}		{if(!doesHaveBadComment) {token.tokenName="IF"; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{INT}		{if(!doesHaveBadComment) {token.tokenName="INT"; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{RETURN}		{if(!doesHaveBadComment) {token.tokenName="RETURN"; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{VOID}		{if(!doesHaveBadComment) {token.tokenName="VOID"; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{WHILE}		{if(!doesHaveBadComment) {token.tokenName="WHILE"; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{NUM}		{if(!doesHaveBadComment) {token.tokenName="NUM"; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{ID}		{if(!doesHaveBadComment) {token.tokenName="ID"; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{COMMA}		{if(!doesHaveBadComment) {token.tokenName="COMMA"; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{DELIM}		{if(!doesHaveBadComment) {token.tokenName="DELIM"; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{OPENCURLY}		{if(!doesHaveBadComment) {token.tokenName="OPENCURLY"; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{CLOSECURLY}		{if(!doesHaveBadComment) {token.tokenName="CLOSECURLY"; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{OPENSQUARE}		{if(!doesHaveBadComment) {token.tokenName="OPENSQUARE"; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{CLOSESQUARE}		{if(!doesHaveBadComment) {token.tokenName="CLOSESQUARE"; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{OPENBRACKET}		{if(!doesHaveBadComment) {token.tokenName="OPENBRACKET"; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{CLOSBRACKET}		{if(!doesHaveBadComment) {token.tokenName="CLOSBRACKET"; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{ADDOP}		{if(!doesHaveBadComment) {token.tokenName="ADDOP"; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{MULOP}		{if(!doesHaveBadComment) {token.tokenName="MULOP"; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{CMPOP}		{if(!doesHaveBadComment) {token.tokenName="CMPOP"; tokens.push_back(token); } charCnt+=strlen(yytext);}
-{ASSOP}		{if(!doesHaveBadComment) {token.tokenName="ASSOP"; tokens.push_back(token); } charCnt+=strlen(yytext);}
-
+{ELSE}		{if(!doesHaveBadComment) {token.lexeme="ELSE"; token.tok = TokenType::ELSE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{IF}		{if(!doesHaveBadComment) {token.lexeme="IF"; token.tok = TokenType::IF; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{INT}		{if(!doesHaveBadComment) {token.lexeme="INT"; token.tok = TokenType::INT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{RETURN}		{if(!doesHaveBadComment) {token.lexeme="RETURN"; token.tok = TokenType::RETURN; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{VOID}		{if(!doesHaveBadComment) {token.lexeme="VOID"; token.tok = TokenType::VOID; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{WHILE}		{if(!doesHaveBadComment) {token.lexeme="WHILE"; token.tok = TokenType::WHILE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{NUM}		{if(!doesHaveBadComment) {token.lexeme="NUM"; token.tok = TokenType::NUM; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{ID}		{if(!doesHaveBadComment) {token.lexeme="ID"; token.tok = TokenType::ID; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{COMMA}		{if(!doesHaveBadComment) {token.lexeme="COMMA"; token.tok = TokenType::COMMA; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{DELIM}		{if(!doesHaveBadComment) {token.lexeme="DELIM"; token.tok = TokenType::DELIM; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{OPENB}		{if(!doesHaveBadComment) {token.lexeme="OPENB"; token.tok = TokenType::OPENB; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{CLOSEB}		{if(!doesHaveBadComment) {token.lexeme="CLOSEB"; token.tok = TokenType::CLOSEB; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{OPENSB}		{if(!doesHaveBadComment) {token.lexeme="OPENSB"; token.tok = TokenType::OPENSB; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{CLOSESB}		{if(!doesHaveBadComment) {token.lexeme="CLOSESB"; token.tok = TokenType::CLOSESB; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{OPENP}		{if(!doesHaveBadComment) {token.lexeme="OPENP"; token.tok = TokenType::OPENP; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{CLOSEP}		{if(!doesHaveBadComment) {token.lexeme="CLOSEP"; token.tok = TokenType::CLOSEP; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{PLUS}		{if(!doesHaveBadComment) {token.lexeme="PLUS"; token.tok = TokenType::PLUS; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{MINUS}		{if(!doesHaveBadComment) {token.lexeme="MINUS"; token.tok = TokenType::MINUS; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{TIMES}		{if(!doesHaveBadComment) {token.lexeme="TIMES"; token.tok = TokenType::TIMES; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{DIVIDE}		{if(!doesHaveBadComment) {token.lexeme="DIVIDE"; token.tok = TokenType::DIVIDE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{LTE}		{if(!doesHaveBadComment) {token.lexeme="LTE"; token.tok = TokenType::LTE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{LT}		{if(!doesHaveBadComment) {token.lexeme="LT"; token.tok = TokenType::LT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{GTE}		{if(!doesHaveBadComment) {token.lexeme="GTE"; token.tok = TokenType::GTE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{GT}		{if(!doesHaveBadComment) {token.lexeme="GT"; token.tok = TokenType::GT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{EE}		{if(!doesHaveBadComment) {token.lexeme="EE"; token.tok = TokenType::EE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{NE}		{if(!doesHaveBadComment) {token.lexeme="NE"; token.tok = TokenType::NE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{FLOAT}		{if(!doesHaveBadComment) {token.lexeme="FLOAT"; token.tok = TokenType::FLOAT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{INT}		{if(!doesHaveBadComment) {token.lexeme="INT"; token.tok = TokenType::INT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 			/*	ERRORS	*/
 
 {OPENCOM}		{
 
-	
+
 	if (!doesHaveBadComment){
 	//cout <<"Open comment not closed .. Line " << yylineno << " at Idx: " << charCnt << endl;
 	error.lineIdx = yylineno;
@@ -112,7 +130,7 @@ ASSOP		 =
 
 
 {NOTALPHA}		{
-	
+
 	if (!doesHaveBadComment){
 	//cout <<"Character "<<yytext<<" not part of the alpabet .. Line " << yylineno << " at Idx: " << charCnt << endl;
 	error.lineIdx = yylineno;
@@ -126,7 +144,7 @@ ASSOP		 =
 
 
 {WRONGNUM}		{
-	
+
 	if (!doesHaveBadComment){
 	//cout <<"Invalid number format " << yytext <<" .. Line " << yylineno << " at Idx: " << charCnt << endl;
 	error.lineIdx = yylineno;
@@ -141,7 +159,7 @@ ASSOP		 =
 
 
 {WRONGID}		{
-	
+
 	if (!doesHaveBadComment){
 	//cout <<"Invalid identifier format " << yytext << ".. Line " << yylineno << " at Idx: " << charCnt << endl;
 	error.lineIdx = yylineno;
@@ -158,7 +176,6 @@ ASSOP		 =
 int main()
 {
 	yylex();
-	
 
 	return 0;
 }
@@ -180,7 +197,3 @@ int main()
 		cout <<errors[i].errorSentence<<" AT LINE: " << errors[i].lineIdx << "- IDX: " << errors[i].charIdx<<endl;
 		cout << endl << endl;
 	}*/
-
-
-
-
