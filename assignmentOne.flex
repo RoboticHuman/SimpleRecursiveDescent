@@ -10,17 +10,6 @@
 	/*	Global Variables	*/
 	/************************/
 
-	struct Error
-	{
-		string errorSentence;
-		int lineIdx;
-		int charIdx;
-	};
-
-	struct Token
-	{
-		string tokenName;
-	};
 
 	vector<Error> errors;
 	vector<Token> tokens;
