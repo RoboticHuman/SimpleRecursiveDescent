@@ -1,10 +1,10 @@
 #pragma once
 #include "OperatorNode.h"
 
-class IdentifierNode : public TreeNode
+class LtNode : public TreeNode
 {
 public: 
-		IdentifierNode (Token token) : TreeNode(nullptr,nullptr){ 
+		LtNode (Token token) : TreeNode(nullptr,nullptr){ 
 			this->token = token;
 		}
 

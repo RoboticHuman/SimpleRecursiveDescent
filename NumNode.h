@@ -1,18 +1,17 @@
-#include "TreeNode.h"
+#pragma once
+#include "OperatorNode.h"
 
-class NumNode
-
+class NumNode : public TreeNode
 {
-public:
-	NumNode(Token token){
-		this->token = token;
-	}
+public: 
+		NumNode (Token token) : TreeNode(nullptr,nullptr){ 
+			this->token = token;
+		}
 
-	Token getToken(){
-		return this->token;
-	}
+		Token getToken() {
+			return this->token;
+		}
+private: 
+		Token token;
 
-
-private:
-	Token token;
-}
+};
