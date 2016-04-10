@@ -1,47 +1,12 @@
 #pragma once
 #include <cstdint>
+#include "Includes.h"
 
 using namespace std;
 
-enum class TokenType{
-  LTE = 1,
-  LT ,
-  IF,
-  GTE,
-  GT,
-  EE,
-  NE ,
-  PLUS,
-  MINUS,
-  TIMES,
-  DIVIDE,
-  ID,
-  VOID,
-  FLOAT,
-  INT,
-  OPENSB,
-  CLOSESB,
-  OPENP,
-  CLOSEP,
-  OPENB,
-  CLOSEB,
-  DELIM,
-  COMMA,
-  EPSILON,
-  NUM,
-  ASSIGN,
-  WHILE,
-  ELSE
-};
 
-class Token
-{
-public:
-  TokenType tok;
-  int line, pos;
-  string lexeme;
 
-};
+
 
 class Treenode
 {

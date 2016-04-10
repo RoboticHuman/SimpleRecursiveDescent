@@ -32,6 +32,7 @@
 #include "Treenode.h"
 #include "delimOperator.h"
 #include <string>
+#include "Includes.h"
 using namespace std;
 class Parser
 {
@@ -62,6 +63,10 @@ private:
   Treenode * parseMulop(); // DON
   Treenode * parseFactor(); // DON
   void match(Token expectedToken);
+
+  Parser (const vector<Token>& tokens, const vector<Error>& errors ) : scanner (tokens,errors){
+    
+  }
 
 public:
   void parse();
