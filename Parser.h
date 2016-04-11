@@ -66,10 +66,14 @@ private:
   void privateDumpSyntaxTree(Treenode* root){
 
     if (root!=NULL){
-      if (root->getToken().lexeme!="DN")
+      //if (root->getToken().lexeme!="DN")
       cout << root->getToken().lexeme<<"...";
       privateDumpSyntaxTree(root->left);
       privateDumpSyntaxTree(root->right);
+    }
+    void privateDumpSyntaxTreeLevelOrder(Treenode* root)
+    {
+      
     }
   }
 

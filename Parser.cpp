@@ -91,14 +91,21 @@ Treenode* Parser::parsevarDeclaration(){
     node->right = new DummyNode();
     match(TokenType::OPENSB);
     if (token.getType() == TokenType::NUM)
+    {
       node->right->left = new ArrayNode(token);
+    }
     match(TokenType::NUM);
     match(TokenType::CLOSESB);
+
+    if (token.getType() == TokenType::DELIM)
+        node->right->right = new DelimNode(token);
+      match(TokenType::DELIM);
   }
+  else{
       if (token.getType() == TokenType::DELIM)
         node->right = new DelimNode(token);
       match(TokenType::DELIM);
-
+  }
 
   return node;
 

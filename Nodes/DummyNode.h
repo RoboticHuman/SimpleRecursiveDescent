@@ -7,7 +7,7 @@ public:
 		DummyNode () : OperatorNode(nullptr,nullptr){ 
 
 			Token t;
-			t.lexeme = "DN";
+			t.lexeme = "NODE";
 			this->token = t;
 		}
 
