@@ -370,8 +370,8 @@ static void yy_fatal_error (yyconst char msg[]  );
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
 
-#define YY_NUM_RULES 36
-#define YY_END_OF_BUFFER 37
+#define YY_NUM_RULES 35
+#define YY_END_OF_BUFFER 36
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -381,14 +381,14 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[73] =
     {   0,
-        0,    0,   37,   33,    3,    1,   36,   36,   18,   19,
-       22,   20,   12,   21,   23,   10,   13,   25,   36,   27,
-       11,   11,   11,   11,   11,   11,   11,   16,   17,   14,
-       15,   29,   32,   10,   10,   34,   24,   28,   26,   35,
-       11,   11,   11,    5,   11,   11,   11,   11,    0,    0,
-        0,   10,   34,   10,   11,   11,   11,    6,   11,   11,
-       11,    2,    4,   11,   11,    8,   11,   11,   11,    9,
-        7,    0
+        0,    0,   36,   32,    3,    1,   35,   35,   19,   20,
+       23,   21,   13,   22,   24,   11,   14,   26,   35,   28,
+       12,   12,   12,   12,   12,   12,   12,   17,   18,   15,
+       16,   30,   31,   11,   11,   33,   25,   29,   27,   34,
+       12,   12,   12,    5,   12,   12,   12,   12,    0,    0,
+        0,   11,   33,   11,   12,   12,   12,    6,   12,   12,
+       12,    2,    4,   12,   12,    9,   12,    7,   12,   10,
+        8,    0
     } ;
 
 static yyconst flex_int32_t yy_ec[256] =
@@ -525,17 +525,6 @@ char *yytext;
 	/*	Global Variables	*/
 	/************************/
 
-	struct Error
-	{
-		string errorSentence;
-		int lineIdx;
-		int charIdx;
-	};
-
-	struct Token
-	{
-		string tokenName;
-	};
 
 	vector<Error> errors;
 	vector<Token> tokens;
@@ -544,12 +533,7 @@ char *yytext;
 	bool doesHaveBadComment = false;
 	int charCnt = 1;
 /*	Regular Expressions Definition	*/
-/*ADDOP		 "+"|"-"
-MULOP		 "*"|"/"
-CMPOP		 "<"|">"|"<="|">="
-ASSOP		 =
-*/
-#line 553 "lex.yy.c"
+#line 537 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -731,10 +715,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 80 "assignmentOne.flex"
+#line 63 "assignmentOne.flex"
 
 			/*	OTHER	*/
-#line 738 "lex.yy.c"
+#line 722 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -820,165 +804,160 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 82 "assignmentOne.flex"
+#line 65 "assignmentOne.flex"
 {yylineno++; charCnt = 1;}
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 83 "assignmentOne.flex"
+#line 66 "assignmentOne.flex"
 {}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 84 "assignmentOne.flex"
+#line 67 "assignmentOne.flex"
 {charCnt++;}
 	YY_BREAK
 /*	TOKENS	*/
 case 4:
 YY_RULE_SETUP
-#line 88 "assignmentOne.flex"
+#line 71 "assignmentOne.flex"
 {if(!doesHaveBadComment) {token.lexeme="ELSE"; token.tok = TokenType::ELSE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 89 "assignmentOne.flex"
+#line 72 "assignmentOne.flex"
 {if(!doesHaveBadComment) {token.lexeme="IF"; token.tok = TokenType::IF; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 90 "assignmentOne.flex"
+#line 73 "assignmentOne.flex"
 {if(!doesHaveBadComment) {token.lexeme="INT"; token.tok = TokenType::INT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 91 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="RETURN"; token.tok = TokenType::RETURN; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 74 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="FLOAT"; token.tok = TokenType::FLOAT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 92 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="VOID"; token.tok = TokenType::VOID; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 75 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="RETURN"; token.tok = TokenType::RETURN; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 93 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="WHILE"; token.tok = TokenType::WHILE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 76 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="VOID"; token.tok = TokenType::VOID; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 94 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="NUM"; token.tok = TokenType::NUM; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 77 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="WHILE"; token.tok = TokenType::WHILE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 95 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="ID"; token.tok = TokenType::ID; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 78 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="NUM"; token.tok = TokenType::NUM; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 96 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="COMMA"; token.tok = TokenType::COMMA; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 79 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="ID"; token.tok = TokenType::ID; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 97 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="DELIM"; token.tok = TokenType::DELIM; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 80 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="COMMA"; token.tok = TokenType::COMMA; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 98 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="OPENB"; token.tok = TokenType::OPENB; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 81 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="DELIM"; token.tok = TokenType::DELIM; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 99 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="CLOSEB"; token.tok = TokenType::CLOSEB; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 82 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="OPENB"; token.tok = TokenType::OPENB; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 100 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="OPENSB"; token.tok = TokenType::OPENSB; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 83 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="CLOSEB"; token.tok = TokenType::CLOSEB; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 101 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="CLOSESB"; token.tok = TokenType::CLOSESB; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 84 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="OPENSB"; token.tok = TokenType::OPENSB; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 102 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="OPENP"; token.tok = TokenType::OPENP; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 85 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="CLOSESB"; token.tok = TokenType::CLOSESB; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 103 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="CLOSEP"; token.tok = TokenType::CLOSEP; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 86 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="OPENP"; token.tok = TokenType::OPENP; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 104 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="PLUS"; token.tok = TokenType::PLUS; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 87 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="CLOSEP"; token.tok = TokenType::CLOSEP; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 105 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="MINUS"; token.tok = TokenType::MINUS; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 88 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="PLUS"; token.tok = TokenType::PLUS; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 106 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="TIMES"; token.tok = TokenType::TIMES; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 89 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="MINUS"; token.tok = TokenType::MINUS; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 107 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="DIVIDE"; token.tok = TokenType::DIVIDE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 90 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="TIMES"; token.tok = TokenType::TIMES; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 108 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="LTE"; token.tok = TokenType::LTE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 91 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="DIVIDE"; token.tok = TokenType::DIVIDE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 109 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="LT"; token.tok = TokenType::LT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 92 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="LTE"; token.tok = TokenType::LTE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 110 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="GTE"; token.tok = TokenType::GTE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 93 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="LT"; token.tok = TokenType::LT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 111 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="GT"; token.tok = TokenType::GT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 94 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="GTE"; token.tok = TokenType::GTE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 112 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="EE"; token.tok = TokenType::EE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 95 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="GT"; token.tok = TokenType::GT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 113 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="NE"; token.tok = TokenType::NE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 96 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="EE"; token.tok = TokenType::EE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 114 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="FLOAT"; token.tok = TokenType::FLOAT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-	YY_BREAK
-case 31:
-YY_RULE_SETUP
-#line 115 "assignmentOne.flex"
-{if(!doesHaveBadComment) {token.lexeme="INT"; token.tok = TokenType::INT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+#line 97 "assignmentOne.flex"
+{if(!doesHaveBadComment) {token.lexeme="NE"; token.tok = TokenType::NE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 	YY_BREAK
 /*	ERRORS	*/
-case 32:
+case 31:
 YY_RULE_SETUP
-#line 118 "assignmentOne.flex"
+#line 101 "assignmentOne.flex"
 {
 
 
@@ -993,9 +972,9 @@ YY_RULE_SETUP
 
 }
 	YY_BREAK
-case 33:
+case 32:
 YY_RULE_SETUP
-#line 133 "assignmentOne.flex"
+#line 116 "assignmentOne.flex"
 {
 
 	if (!doesHaveBadComment){
@@ -1009,9 +988,9 @@ YY_RULE_SETUP
 
 }
 	YY_BREAK
-case 34:
+case 33:
 YY_RULE_SETUP
-#line 147 "assignmentOne.flex"
+#line 130 "assignmentOne.flex"
 {
 
 	if (!doesHaveBadComment){
@@ -1025,9 +1004,9 @@ YY_RULE_SETUP
 
 }
 	YY_BREAK
-case 35:
+case 34:
 YY_RULE_SETUP
-#line 162 "assignmentOne.flex"
+#line 145 "assignmentOne.flex"
 {
 
 	if (!doesHaveBadComment){
@@ -1040,12 +1019,12 @@ YY_RULE_SETUP
 
 }
 	YY_BREAK
-case 36:
+case 35:
 YY_RULE_SETUP
-#line 174 "assignmentOne.flex"
+#line 157 "assignmentOne.flex"
 ECHO;
 	YY_BREAK
-#line 1049 "lex.yy.c"
+#line 1028 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2042,7 +2021,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 174 "assignmentOne.flex"
+#line 157 "assignmentOne.flex"
 
 
 

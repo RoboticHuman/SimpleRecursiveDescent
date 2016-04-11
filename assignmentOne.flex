@@ -21,7 +21,7 @@
 
 %option noyywrap
 
-/*	Regular Expressions Definition	*/
+	/*	Regular Expressions Definition	*/
 
 ALPHA		[a-zA-Z0-9_!=<>.{}()\[\]*+\-;#$ \t\n\r/]
 LTE "<="
@@ -34,11 +34,11 @@ PLUS "+"
 MINUS "-"
 TIMES "*"
 DIVIDE "/"
-FLOAT [Ff][Ll][Oo][Aa][Tt]
+FLOAT		[Ff][Ll][Oo][Aa][Tt]
 NOTALPHA	[^a-zA-Z0-9_!=<>.{}()\[\]*+\-;#$ \t\n\r/]
 ELSE		[Ee][Ll][Ss][Ee]
 IF			[Ii][Ff]
-INT 		[Ii][Nn][Tt]
+INT			[Ii][Nn][Tt]
 RETURN		[Rr][Ee][Tt][Uu][Rr][Nn]
 VOID		[Vv][Oo][Ii][Dd]
 WHILE		[Ww][Hh][Ii][Ll][Ee]
@@ -60,12 +60,6 @@ CLOSESB	"]"
 OPENP "("
 CLOSEP	")"
 
-/*ADDOP		 "+"|"-"
-MULOP		 "*"|"/"
-CMPOP		 "<"|">"|"<="|">="
-ASSOP		 =
-*/
-
 %%
 			/*	OTHER	*/
 \n			{yylineno++; charCnt = 1;}
@@ -77,6 +71,7 @@ ASSOP		 =
 {ELSE}		{if(!doesHaveBadComment) {token.lexeme="ELSE"; token.tok = TokenType::ELSE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 {IF}		{if(!doesHaveBadComment) {token.lexeme="IF"; token.tok = TokenType::IF; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 {INT}		{if(!doesHaveBadComment) {token.lexeme="INT"; token.tok = TokenType::INT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{FLOAT}		{if(!doesHaveBadComment) {token.lexeme="FLOAT"; token.tok = TokenType::FLOAT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 {RETURN}		{if(!doesHaveBadComment) {token.lexeme="RETURN"; token.tok = TokenType::RETURN; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 {VOID}		{if(!doesHaveBadComment) {token.lexeme="VOID"; token.tok = TokenType::VOID; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 {WHILE}		{if(!doesHaveBadComment) {token.lexeme="WHILE"; token.tok = TokenType::WHILE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
@@ -100,9 +95,8 @@ ASSOP		 =
 {GT}		{if(!doesHaveBadComment) {token.lexeme="GT"; token.tok = TokenType::GT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 {EE}		{if(!doesHaveBadComment) {token.lexeme="EE"; token.tok = TokenType::EE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 {NE}		{if(!doesHaveBadComment) {token.lexeme="NE"; token.tok = TokenType::NE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{FLOAT}		{if(!doesHaveBadComment) {token.lexeme="FLOAT"; token.tok = TokenType::FLOAT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{INT}		{if(!doesHaveBadComment) {token.lexeme="INT"; token.tok = TokenType::INT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-			/*	ERRORS	*/
+			
+	/*	ERRORS	*/
 
 {OPENCOM}		{
 
