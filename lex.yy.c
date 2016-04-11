@@ -2031,6 +2031,8 @@ int main()
 
   parser.parse();
   parser.dumpSyntaxTree();
+  cout << endl << endl << endl;
+  parser.dumpSyntaxTreeDrawed();
 	return 0;
 }
 

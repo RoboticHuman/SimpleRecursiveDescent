@@ -1,7 +1,8 @@
-int mainFun (void) {
+int mainFun (int x,int y[]) {
   
   int var1; int arrvars [24]; float var2;
   {
+  	if (x==y) z=y
     var1 = var2
   }
 

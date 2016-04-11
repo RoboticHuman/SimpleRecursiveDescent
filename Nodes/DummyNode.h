@@ -4,10 +4,10 @@
 class DummyNode : public OperatorNode
 {
 public: 
-		DummyNode () : OperatorNode(nullptr,nullptr){ 
+		DummyNode (string name="PIVOT") : OperatorNode(nullptr,nullptr){ 
 
 			Token t;
-			t.lexeme = "NODE";
+			t.lexeme = name;
 			this->token = t;
 		}
 

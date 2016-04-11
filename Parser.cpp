@@ -9,15 +9,15 @@ Treenode* Parser::parseProgram()
 {
   Treenode* node;
 
-  Treenode* entryNode = new DummyNode();
-  entryNode->right = new DummyNode();
+  Treenode* entryNode = new DummyNode("ENTRY");
+  entryNode->right = new DummyNode("PROGRAM_SIG");
   entryNode->left = parseTypeSpecifier();
 
   node = entryNode->right;
 
   node->left = new IdentifierNode(token);
   match(TokenType::ID);
-  node->right = new DummyNode();
+  node->right = new DummyNode("PROGRAM_PARAMS");
   node = node->right;
 
 
@@ -26,15 +26,15 @@ Treenode* Parser::parseProgram()
 
   node->left = parseParams();
   match(TokenType::CLOSEP);
-  node->right = new DummyNode();
+  node->right = new DummyNode("PROGRAM_START");
   node = node->right;
 
   match(TokenType::OPENB);
   node->left = parseDeclarationList();
-  node->right = new DummyNode();
+  node->right = new DummyNode("PROGRAM_EXEC");
   node = node->right;
 
-  node->right = new DummyNode();
+  node->right = new DummyNode("END_OF_PROG");
   node->left = parseCompoundStmt();
   
   match(TokenType::CLOSEB);
@@ -51,9 +51,9 @@ Treenode* Parser::parseDeclarationList(){
   Treenode* node;
 
   if (token.getType() == TokenType ::INT || token.getType() == TokenType ::FLOAT ||token.getType() == TokenType ::VOID ){
-    node = new DummyNode();
+    node = new DummyNode("DECLARATION");
     node->right = parseDeclaration();
-    node->left=new DummyNode();
+    node->left=new DummyNode("DECLARATION");
     left = node;
     node = node->left;
   }
@@ -61,7 +61,7 @@ Treenode* Parser::parseDeclarationList(){
   while (token.getType() == TokenType ::INT || token.getType() == TokenType ::FLOAT ||token.getType() == TokenType ::VOID ){
 
     node->right = parseDeclaration();
-    node->left=new DummyNode();
+    node->left=new DummyNode("DECLARATION");
     node = node->left;
 
   }
@@ -88,7 +88,7 @@ Treenode* Parser::parsevarDeclaration(){
   node->left = left;
 
   if (token.getType()==TokenType::OPENSB){
-    node->right = new DummyNode();
+    node->right = new DummyNode("ARRAY_DECLARATION");
     match(TokenType::OPENSB);
     if (token.getType() == TokenType::NUM)
     {
@@ -163,7 +163,7 @@ Treenode* Parser::parseParam(){
 
   node->left = left;
 
-  node->right = new DummyNode();
+  node->right = new DummyNode("END_PARAM");
 
 
   if (token.getType() == TokenType :: OPENSB){
@@ -192,7 +192,7 @@ Treenode* Parser::parseCompoundStmt(){
 //<statement-list>  -> { <statement> }
 Treenode* Parser::parseStmtList()
 {
-  Treenode *node = new DummyNode();
+  Treenode *node = new DummyNode("STMT");
   Treenode* left = node;
   while(
     token.getType() == TokenType::ID
@@ -202,7 +202,7 @@ Treenode* Parser::parseStmtList()
   )
   {
     node->right = parseStmt();
-    node->left = new DummyNode();
+    node->left = new DummyNode("STMT");
     node = node->left;
   }
 

@@ -33,6 +33,8 @@
 #include "Definitions.h"
 #include "Scanner.h"
 #include <iostream>
+#include <queue>
+#include <cmath>
 using namespace std;
 class Parser
 {
@@ -72,6 +74,43 @@ private:
       privateDumpSyntaxTree(root->right);
     }
   }
+  void outputTabs(int size){
+    for (int i=0; i<size; i++){
+      cout << '\t';
+    }
+  }
+  void BFS(){
+    int off =15;
+    int lvl = 0;
+    queue<pair<Treenode*,string> > q;
+    q.push({syntaxtreeRoot,""});
+    Treenode* curr;
+    while (!q.empty()){
+      int size = q.size();
+      cout <<"LEVEL: " << lvl<<": " <<endl;
+      for (int i=0; i<size; i++){
+        Treenode* currNodeInLvl = q.front().first;
+        string parent = q.front().second;
+ 
+        cout << currNodeInLvl->getToken().lexeme;
+        if (currNodeInLvl->left)
+          q.push({currNodeInLvl->left,currNodeInLvl->getToken().lexeme});
+        if (currNodeInLvl->right)
+          q.push({currNodeInLvl->right,currNodeInLvl->getToken().lexeme});
+        cout<<"(PARENT IS "<<parent<<")";
+        cout <<"   ";
+        q.pop();
+
+      }
+      cout << endl;
+      cout << "----------------------------------------------------------------------------------------------------------------";
+      cout << endl;
+      lvl++;
+
+    }
+
+
+  }
 
 public:
   void parse(){
@@ -79,6 +118,9 @@ public:
   }
   void dumpSyntaxTree(){
     privateDumpSyntaxTree(syntaxtreeRoot);
+  }
+  void dumpSyntaxTreeDrawed(){
+    BFS();
   }
   Parser (const vector<Token>& tokens, const vector<Error>& errors ) : scanner (tokens,errors){
     Token t;
