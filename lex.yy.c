@@ -2022,11 +2022,14 @@ int main()
 {
 	yylex();
 	Parser parser (tokens,errors);
-	Scanner scanner (tokens,errors);
-	Token t;
-	while (scanner.getNextToken(t)){
-		cout << t.lexeme << endl;
-	}
+	//Scanner scanner (tokens,errors);
+  //Scanner scanner = parser.getScanner();
+	//Token t;
+	//while (scanner.getNextToken(t)){
+		//cout << t.lexeme << endl;
+	//}
+
+  parser.parse();
 	return 0;
 }
 

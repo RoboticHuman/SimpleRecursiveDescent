@@ -64,10 +64,19 @@ private:
   void match(TokenType expectedToken);
 
 public:
-  void parse();
+  void parse(){
+    parseProgram();
+  }
   Parser (const vector<Token>& tokens, const vector<Error>& errors ) : scanner (tokens,errors){
-    
+    Token t;
+    if (scanner.getNextToken(t)){
+        token = t;
+    }
   }
 
-  ~Parser();
+  Scanner getScanner (){
+    return scanner;
+  }
+
+  ~Parser(){}
 };

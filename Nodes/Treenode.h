@@ -19,5 +19,5 @@ public:
 	  this->left = nullptr;
 	  this->right = nullptr;
   }
-  virtual ~Treenode();
+  virtual ~Treenode(){}
 };
