@@ -1,7 +1,7 @@
 %top{
 	#include <vector>
 	#include <iostream>
-	#include "Scanner.h"
+	#include "Parser.h"
 	using namespace std;
 }
 
@@ -30,6 +30,7 @@ GTE ">="
 GT ">"
 EE "=="
 NE "!="
+ASSIGN "="
 PLUS "+"
 MINUS "-"
 TIMES "*"
@@ -72,29 +73,29 @@ CLOSEP	")"
 {IF}		{if(!doesHaveBadComment) {token.lexeme="IF"; token.tok = TokenType::IF; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 {INT}		{if(!doesHaveBadComment) {token.lexeme="INT"; token.tok = TokenType::INT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 {FLOAT}		{if(!doesHaveBadComment) {token.lexeme="FLOAT"; token.tok = TokenType::FLOAT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{RETURN}		{if(!doesHaveBadComment) {token.lexeme="RETURN"; token.tok = TokenType::RETURN; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 {VOID}		{if(!doesHaveBadComment) {token.lexeme="VOID"; token.tok = TokenType::VOID; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 {WHILE}		{if(!doesHaveBadComment) {token.lexeme="WHILE"; token.tok = TokenType::WHILE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{NUM}		{if(!doesHaveBadComment) {token.lexeme="NUM"; token.tok = TokenType::NUM; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{NUM}		{if(!doesHaveBadComment) {token.lexeme=yytext; token.tok = TokenType::NUM; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 {ID}		{if(!doesHaveBadComment) {token.lexeme="ID"; token.tok = TokenType::ID; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{COMMA}		{if(!doesHaveBadComment) {token.lexeme="COMMA"; token.tok = TokenType::COMMA; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{DELIM}		{if(!doesHaveBadComment) {token.lexeme="DELIM"; token.tok = TokenType::DELIM; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{OPENB}		{if(!doesHaveBadComment) {token.lexeme="OPENB"; token.tok = TokenType::OPENB; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{CLOSEB}		{if(!doesHaveBadComment) {token.lexeme="CLOSEB"; token.tok = TokenType::CLOSEB; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{OPENSB}		{if(!doesHaveBadComment) {token.lexeme="OPENSB"; token.tok = TokenType::OPENSB; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{CLOSESB}		{if(!doesHaveBadComment) {token.lexeme="CLOSESB"; token.tok = TokenType::CLOSESB; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{OPENP}		{if(!doesHaveBadComment) {token.lexeme="OPENP"; token.tok = TokenType::OPENP; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{CLOSEP}		{if(!doesHaveBadComment) {token.lexeme="CLOSEP"; token.tok = TokenType::CLOSEP; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{PLUS}		{if(!doesHaveBadComment) {token.lexeme="PLUS"; token.tok = TokenType::PLUS; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{MINUS}		{if(!doesHaveBadComment) {token.lexeme="MINUS"; token.tok = TokenType::MINUS; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{TIMES}		{if(!doesHaveBadComment) {token.lexeme="TIMES"; token.tok = TokenType::TIMES; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{DIVIDE}		{if(!doesHaveBadComment) {token.lexeme="DIVIDE"; token.tok = TokenType::DIVIDE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{LTE}		{if(!doesHaveBadComment) {token.lexeme="LTE"; token.tok = TokenType::LTE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{LT}		{if(!doesHaveBadComment) {token.lexeme="LT"; token.tok = TokenType::LT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{GTE}		{if(!doesHaveBadComment) {token.lexeme="GTE"; token.tok = TokenType::GTE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{GT}		{if(!doesHaveBadComment) {token.lexeme="GT"; token.tok = TokenType::GT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{EE}		{if(!doesHaveBadComment) {token.lexeme="EE"; token.tok = TokenType::EE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
-{NE}		{if(!doesHaveBadComment) {token.lexeme="NE"; token.tok = TokenType::NE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{COMMA}		{if(!doesHaveBadComment) {token.lexeme=","; token.tok = TokenType::COMMA; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{DELIM}		{if(!doesHaveBadComment) {token.lexeme=";"; token.tok = TokenType::DELIM; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{OPENB}		{if(!doesHaveBadComment) {token.lexeme="{"; token.tok = TokenType::OPENB; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{CLOSEB}		{if(!doesHaveBadComment) {token.lexeme="}"; token.tok = TokenType::CLOSEB; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{OPENSB}		{if(!doesHaveBadComment) {token.lexeme="["; token.tok = TokenType::OPENSB; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{CLOSESB}		{if(!doesHaveBadComment) {token.lexeme="]"; token.tok = TokenType::CLOSESB; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{OPENP}		{if(!doesHaveBadComment) {token.lexeme="("; token.tok = TokenType::OPENP; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{CLOSEP}		{if(!doesHaveBadComment) {token.lexeme=")"; token.tok = TokenType::CLOSEP; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{PLUS}		{if(!doesHaveBadComment) {token.lexeme="+"; token.tok = TokenType::PLUS; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{MINUS}		{if(!doesHaveBadComment) {token.lexeme="-"; token.tok = TokenType::MINUS; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{TIMES}		{if(!doesHaveBadComment) {token.lexeme="*"; token.tok = TokenType::TIMES; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{DIVIDE}		{if(!doesHaveBadComment) {token.lexeme="/"; token.tok = TokenType::DIVIDE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{LTE}		{if(!doesHaveBadComment) {token.lexeme="<="; token.tok = TokenType::LTE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{LT}		{if(!doesHaveBadComment) {token.lexeme="<"; token.tok = TokenType::LT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{GTE}		{if(!doesHaveBadComment) {token.lexeme=">="; token.tok = TokenType::GTE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{GT}		{if(!doesHaveBadComment) {token.lexeme=">"; token.tok = TokenType::GT; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{EE}		{if(!doesHaveBadComment) {token.lexeme="=="; token.tok = TokenType::EE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{NE}		{if(!doesHaveBadComment) {token.lexeme="!="; token.tok = TokenType::NE; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
+{ASSIGN}	{if(!doesHaveBadComment) {token.lexeme="="; token.tok = TokenType::ASSIGN; token.line = yylineno; token.pos=charCnt; tokens.push_back(token);} charCnt+=strlen(yytext);}
 			
 	/*	ERRORS	*/
 
@@ -160,7 +161,7 @@ CLOSEP	")"
 int main()
 {
 	yylex();
-	//Parser parser (tokens,errors);
+	Parser parser (tokens,errors);
 	Scanner scanner (tokens,errors);
 	Token t;
 	while (scanner.getNextToken(t)){

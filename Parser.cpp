@@ -88,7 +88,7 @@ Treenode* Parser::parsevarDeclaration(){
     node->right = new DummyNode();
     match(TokenType::OPENSB);
     if (token.getType() == TokenType::NUM)
-      node->right->left = new ArrayAccess(token);
+      node->right->left = new ArrayNode(token);
     match(TokenType::NUM);
     match(TokenType::CLOSESB);
     if (token.getType() == TokenType::DELIM)
@@ -162,10 +162,10 @@ Treenode* Parser::parseParam(){
   node->right = new DummyNode();
 
 
-  if (token.getType == TokenType :: OPENSB){
+  if (token.getType() == TokenType :: OPENSB){
       match(TokenType::OPENSB);
       match(TokenType::CLOSESB);
-      node->right = new ArrayAccess();
+      node->right = new ArrayNode(token);
 
   }
 
@@ -336,35 +336,35 @@ Treenode* Parser::parseRelop()
   Treenode* node;
   if(token.getType() == TokenType::LTE)
   {
-    node = new LteNode;
+    node = new LteNode(token);
     match(TokenType::LTE);
   }
   else if(token.getType() == TokenType::LT)
   {
-    node = new LtNode;
+    node = new LtNode(token);
     match(TokenType::LT);
   }
   else if(token.getType() == TokenType::GT)
   {
-    node = new GtNode;
+    node = new GtNode(token);
     match(TokenType::GT);
   }
   else if(token.getType() == TokenType::GTE)
   {
-    node = new GteNode;
+    node = new GteNode(token);
     match(TokenType::GTE);
   }
   else if(token.getType() == TokenType::EE)
   {
-    node = new EeNode;
+    node = new EeNode(token);
     match(TokenType::EE);
   }
   else if(token.getType() == TokenType::NE)
   {
-    node = new NeNode;
+    node = new NeNode(token);
     match(TokenType::NE);
   }
-  else return SyntaxError();
+  else throw SyntaxError();
   return node;
 }
 //--<additive-expression> -> <term> { <addop> <term> }
@@ -387,16 +387,16 @@ Treenode* Parser::parseAddop()
 {
   Treenode* node;
   if(token.getType() == TokenType::PLUS){
-    node = new PlusNode;
+    node = new PlusNode(token);
     match(TokenType::PLUS);
   }
   else if(token.getType() == TokenType::MINUS)
   {
-    node = new MinusNode;
+    node = new MinusNode(token);
     match(TokenType::MINUS);
   }
   else
-    return SyntaxError();
+    throw SyntaxError();
   return node;
 }
 
@@ -420,15 +420,15 @@ Treenode* Parser::parseMulop()
   Treenode* node;
   if(token.getType() == TokenType::TIMES)
   {
-    node =  new TimesNode;
+    node =  new TimesNode(token);
     match(TokenType::TIMES);
   }
   else if(token.getType() == TokenType::DIVIDE){
-      node =  new DivideNode;
+      node =  new DivideNode(token);
       match(TokenType::DIVIDE);
   }
   else
-    return SyntaxError();
+    throw SyntaxError();
   return node;
 }
 //<factor>        -> OPENP <expression> CLOSEP | <var> | NUM

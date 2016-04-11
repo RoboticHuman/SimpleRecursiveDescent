@@ -26,13 +26,12 @@
 <mulop>         -> TIMES | DIVIDE
 <factor>        -> OPENP <expression> CLOSEP | <var> | NUM
 */
-#include "Scanner.h"
-#include "LiteralNode.h"
-#include "IdentifierNode.h"
-#include "Treenode.h"
-#include "delimOperator.h"
+
+
 #include <string>
 #include "Includes.h"
+#include "Definitions.h"
+#include "Scanner.h"
 using namespace std;
 class Parser
 {
@@ -64,12 +63,12 @@ private:
   Treenode * parseFactor(); // DON
   void match(Token expectedToken);
 
+public:
+  void parse();
   Parser (const vector<Token>& tokens, const vector<Error>& errors ) : scanner (tokens,errors){
     
   }
 
-public:
-  void parse();
   Parser(string filePath);
   ~Parser();
 };

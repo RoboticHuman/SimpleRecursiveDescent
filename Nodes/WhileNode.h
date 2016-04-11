@@ -1,10 +1,10 @@
 #pragma once
 #include "OperatorNode.h"
 
-class WhileNode : public TreeNode
+class WhileNode : public OperatorNode
 {
 public: 
-		WhileNode (Token token) : TreeNode(nullptr,nullptr){ 
+		WhileNode (Token token) : OperatorNode(nullptr,nullptr){ 
 			this->token = token;
 		}
 

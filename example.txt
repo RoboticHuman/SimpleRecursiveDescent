@@ -1,17 +1,9 @@
-void func() {
-	int i = 0;
-	while(i < size) {
-		if(x == 5) {	/* Hey */
-			val#e = val#
-			name = 723.5E234;
-		} else {
-			y = A[i] * (3 + 7) % y;
-		}
-		i = i + 1 + 5 - 2e+9;
-		/*
-	}
-	12ab
-	r = 21e+;
-	return i;
+int mainFun (void) {
+  
+  int var1; int arrvar [24]; float var2;
+  {
+    var1 = var2
+  }
+
 }
 
