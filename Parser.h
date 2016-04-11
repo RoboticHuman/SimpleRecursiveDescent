@@ -32,6 +32,7 @@
 #include "Includes.h"
 #include "Definitions.h"
 #include "Scanner.h"
+#include <iostream>
 using namespace std;
 class Parser
 {
@@ -62,16 +63,29 @@ private:
   Treenode * parseMulop(); // DON
   Treenode * parseFactor(); // DON
   void match(TokenType expectedToken);
+  void privateDumpSyntaxTree(Treenode* root){
+
+    if (root!=NULL){
+      if (root->getToken().lexeme!="DN")
+      cout << root->getToken().lexeme<<"...";
+      privateDumpSyntaxTree(root->left);
+      privateDumpSyntaxTree(root->right);
+    }
+  }
 
 public:
   void parse(){
-    parseProgram();
+    syntaxtreeRoot = parseProgram();
+  }
+  void dumpSyntaxTree(){
+    privateDumpSyntaxTree(syntaxtreeRoot);
   }
   Parser (const vector<Token>& tokens, const vector<Error>& errors ) : scanner (tokens,errors){
     Token t;
     if (scanner.getNextToken(t)){
         token = t;
     }
+    
   }
 
   Scanner getScanner (){

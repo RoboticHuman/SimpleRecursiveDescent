@@ -1,6 +1,3 @@
-#include <string>
-using namespace std;
-
 #include "Nodes/LteNode.h"
 #include "Nodes/LtNode.h"
 #include "Nodes/GteNode.h"

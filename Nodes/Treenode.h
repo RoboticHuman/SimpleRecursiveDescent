@@ -19,5 +19,10 @@ public:
 	  this->left = nullptr;
 	  this->right = nullptr;
   }
+  Token getToken() {
+      return this->token;
+    }
   virtual ~Treenode(){}
+protected:
+  Token token;
 };

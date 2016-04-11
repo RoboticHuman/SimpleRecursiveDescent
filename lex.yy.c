@@ -2030,6 +2030,7 @@ int main()
 	//}
 
   parser.parse();
+  parser.dumpSyntaxTree();
 	return 0;
 }
 

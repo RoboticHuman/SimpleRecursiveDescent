@@ -8,10 +8,5 @@ public:
 			this->token = token;
 		}
 
-		Token getToken() {
-			return this->token;
-		}
 private: 
-		Token token;
-
 };

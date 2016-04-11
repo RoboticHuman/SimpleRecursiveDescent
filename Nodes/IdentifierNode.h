@@ -1,17 +1,12 @@
 #pragma once
-#include "Treenode.h"
+#include "OperatorNode.h"
 
-class IdentifierNode : public Treenode
+class IdentifierNode : public OperatorNode
 {
 public: 
-		IdentifierNode (Token token) : Treenode(nullptr,nullptr){ 
+		IdentifierNode (Token token) : OperatorNode(nullptr,nullptr){ 
 			this->token = token;
 		}
 
-		Token getToken() {
-			return this->token;
-		}
 private: 
-		Token token;
-
 };

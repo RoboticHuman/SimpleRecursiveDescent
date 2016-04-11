@@ -1,41 +1,45 @@
 #include "Parser.h"
 #include "Definitions.h"
-
-
+#include <iostream>
+//01090003254
+using namespace std;
 
 //<program>       -> <type-specifier> ID OPENP <params> CLOSEP OPENB <declaration-list> <compound-statement> CLOSEB
 Treenode* Parser::parseProgram()
 {
   Treenode* node;
+
   Treenode* entryNode = new DummyNode();
-  entryNode->left = new DummyNode();
-  entryNode->right = parseTypeSpecifier();
+  entryNode->right = new DummyNode();
+  entryNode->left = parseTypeSpecifier();
 
-  node = entryNode->left;
+  node = entryNode->right;
 
-  node->right = new IdentifierNode(token);
+  node->left = new IdentifierNode(token);
   match(TokenType::ID);
-  node->left = new DummyNode();
-  node = node->left;
+  node->right = new DummyNode();
+  node = node->right;
+
 
 
   match(TokenType::OPENP);
-  node->right = parseParams();
-  match(TokenType::CLOSEP);
-  node->left = new DummyNode();
-  node = node->left;
 
+  node->left = parseParams();
+  match(TokenType::CLOSEP);
+  node->right = new DummyNode();
+  node = node->right;
 
   match(TokenType::OPENB);
-  node->right = parseDeclarationList();
-  node->left = new DummyNode();
-  node = node->left;
+  node->left = parseDeclarationList();
+  node->right = new DummyNode();
+  node = node->right;
 
-  node->left = new DummyNode();
-  node->right = parseCompoundStmt();
+  node->right = new DummyNode();
+  node->left = parseCompoundStmt();
+  
   match(TokenType::CLOSEB);
-  node = node->left;
-
+  node = node->right;
+  //cout << "LEXEME "  << token.lexeme << endl;
   return entryNode;
 
 }
@@ -55,6 +59,7 @@ Treenode* Parser::parseDeclarationList(){
   }
 
   while (token.getType() == TokenType ::INT || token.getType() == TokenType ::FLOAT ||token.getType() == TokenType ::VOID ){
+
     node->right = parseDeclaration();
     node->left=new DummyNode();
     node = node->left;
@@ -75,11 +80,11 @@ Treenode* Parser::parsevarDeclaration(){
 
   Treenode* node;
   Treenode* left;
-
   left = parseTypeSpecifier();
   if (token.getType() == TokenType::ID)
     node = new IdentifierNode(token);
   match(TokenType::ID);
+
   node->left = left;
 
   if (token.getType()==TokenType::OPENSB){
@@ -89,17 +94,10 @@ Treenode* Parser::parsevarDeclaration(){
       node->right->left = new ArrayNode(token);
     match(TokenType::NUM);
     match(TokenType::CLOSESB);
-    if (token.getType() == TokenType::DELIM)
-      node->right->right = new DelimNode(token);
-    match(TokenType::DELIM);
-
   }
-  else{
-
       if (token.getType() == TokenType::DELIM)
         node->right = new DelimNode(token);
       match(TokenType::DELIM);
-  }
 
 
   return node;
@@ -126,12 +124,11 @@ Treenode* Parser::parseParams(){
   if ( scanner.peakToken(t)){
 	 if ( t.getType() == TokenType::ID)
      node = parseParamList();
-  }
   else{
     node = new TypeSpecifierNode(token);
     match(TokenType::VOID);
   }
-
+}
   return node;
 }
 
@@ -465,7 +462,7 @@ void Parser::match(TokenType expectedToken)
 	  if (scanner.getNextToken(t)){
 		  token = t;
 	  }
-	  else throw "END OF INPUT";
+	  //else throw "END OF INPUT";
   }
   else
     throw "ERROR";
