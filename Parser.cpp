@@ -234,7 +234,7 @@ Treenode* Parser::parseStmt()
     return node;
   }
   else
-    throw "ERROR";
+    throwError();
 }
 
 //<selection-stmt>  -> IF OPENP <expression> CLOSEP <statement> [ ELSE <statement> ]
@@ -368,7 +368,7 @@ Treenode* Parser::parseRelop()
     node = new NeNode(token);
     match(TokenType::NE);
   }
-  else throw "ERROR";
+  else throwError();
   return node;
 }
 //--<additive-expression> -> <term> { <addop> <term> }
@@ -400,7 +400,7 @@ Treenode* Parser::parseAddop()
     match(TokenType::MINUS);
   }
   else
-    throw "ERROR";
+    throwError();
   return node;
 }
 
@@ -432,7 +432,7 @@ Treenode* Parser::parseMulop()
       match(TokenType::DIVIDE);
   }
   else
-    throw "ERROR";
+    throwError();
   return node;
 }
 //<factor>        -> OPENP <expression> CLOSEP | <var> | NUM
@@ -459,7 +459,7 @@ Treenode* Parser::parseFactor()
     return node;
   }
   else
-    throw "ERROR";
+    throwError();
 }
 
 void Parser::match(TokenType expectedToken)
@@ -471,6 +471,7 @@ void Parser::match(TokenType expectedToken)
 	  }
 	  //else throw "END OF INPUT";
   }
-  else
-    throw "ERROR";
+  else{
+    throwError();
+  }
 }

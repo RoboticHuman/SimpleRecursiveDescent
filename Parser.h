@@ -112,6 +112,18 @@ private:
 
   }
 
+  void throwError(){
+    int errLine = token.line;
+    int errChar = token.pos;
+    string errorStr="";
+    errorStr+="ERROR AT LINE NUMBER ";
+    errorStr+=to_string(errLine);
+    errorStr+=" -- POS: ";
+    errorStr+=to_string(errChar);
+    cout << errorStr << endl; 
+    throw errorStr;
+  }
+
 public:
   void parse(){
     syntaxtreeRoot = parseProgram();

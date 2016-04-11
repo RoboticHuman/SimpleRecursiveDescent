@@ -1,4 +1,4 @@
-int mainFun (int x,int y[]) {
+int mainFun (int x,float y[]) {
   
   int var1; int arrvars [24]; float var2;
   {
