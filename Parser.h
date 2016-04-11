@@ -61,7 +61,7 @@ private:
   Treenode * parseTerm(); // DON
   Treenode * parseMulop(); // DON
   Treenode * parseFactor(); // DON
-  void match(Token expectedToken);
+  void match(TokenType expectedToken);
 
 public:
   void parse();
@@ -69,6 +69,5 @@ public:
     
   }
 
-  Parser(string filePath);
   ~Parser();
 };

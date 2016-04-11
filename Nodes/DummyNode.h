@@ -4,14 +4,10 @@
 class DummyNode : public OperatorNode
 {
 public: 
-		DummyNode (Token token) : OperatorNode(nullptr,nullptr){ 
-			this->token = token;
+		DummyNode () : OperatorNode(nullptr,nullptr){
 		}
 
-		Token getToken() {
-			return this->token;
-		}
 private: 
-		Token token;
+
 
 };

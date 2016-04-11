@@ -1,12 +1,10 @@
 #include "Parser.h"
+#include "Definitions.h"
 
-Parser::Parser(string filePath): scanner(filePath)
-{
 
-}
 
 //<program>       -> <type-specifier> ID OPENP <params> CLOSEP OPENB <declaration-list> <compound-statement> CLOSEB
-Parser::parseProgram()
+Treenode* Parser::parseProgram()
 {
   Treenode* node;
   Treenode* entryNode = new DummyNode();
@@ -23,7 +21,7 @@ Parser::parseProgram()
 
   match(TokenType::OPENP);
   node->right = parseParams();
-  match(TokenType::CLOSEP)
+  match(TokenType::CLOSEP);
   node->left = new DummyNode();
   node = node->left;
 
@@ -111,9 +109,9 @@ Treenode* Parser::parsevarDeclaration(){
 
 //--<type-specifier>  -> INT | VOID | FLOAT
 Treenode* Parser::parseTypeSpecifier(){
-
+	Treenode* node;
   if (token.getType() == TokenType ::INT || token.getType() == TokenType ::FLOAT ||token.getType() == TokenType ::VOID ){
-    Treenode* node = new TypeSpecifierNode(token);
+     node = new TypeSpecifierNode(token);
   }
   match(token.getType());
   return node;
@@ -123,12 +121,14 @@ Treenode* Parser::parseTypeSpecifier(){
 Treenode* Parser::parseParams(){
 
   // TODO
-
-  if ( scanner.peakToken() == TokenType::ID){
-    Treenode* node = parseParamList();
+	Treenode* node;
+	Token t;
+  if ( scanner.peakToken(t)){
+	 if ( t.getType() == TokenType::ID)
+     node = parseParamList();
   }
   else{
-    Treenode* node = TypeSpecifierNode(token);
+    node = new TypeSpecifierNode(token);
     match(TokenType::VOID);
   }
 
@@ -142,7 +142,7 @@ Treenode* Parser::parseParamList(){
   left = parseParam();
   while(token.getType()==TokenType::COMMA)
   {
-    node = new DelimNode(token.getType());
+    node = new DelimNode(token);
     match(TokenType::COMMA);
     node->left = left;
     node->right = parseParam();
@@ -193,7 +193,7 @@ Treenode* Parser::parseStmtList()
   while(
     token.getType() == TokenType::ID
     || token.getType() == TokenType::OPENB
-    || token.getType() == TokeType::IF
+    || token.getType() == TokenType::IF
     || token.getType() == TokenType::WHILE
   )
   {
@@ -230,7 +230,7 @@ Treenode* Parser::parseStmt()
     return node;
   }
   else
-    throw SyntaxError();
+    throw "ERROR";
 }
 
 //<selection-stmt>  -> IF OPENP <expression> CLOSEP <statement> [ ELSE <statement> ]
@@ -246,7 +246,7 @@ Treenode* Parser::parseSelectionStmt()
   Treenode* node = parseStmt();
   if(token.getType() == TokenType::ELSE)
   {
-    Ifnode->right = new ThenElse(token);
+    Ifnode->right = new ElseNode(token);
     match(TokenType::ELSE);
     Ifnode->right->left = node;
     Ifnode->right->right = parseStmt();
@@ -263,7 +263,7 @@ Treenode* Parser::parseSelectionStmt()
 Treenode* Parser::parseIterationStmt()
 {
   Treenode* left, *node;
-  node = new Whilenode(token);
+  node = new WhileNode(token);
   match(TokenType::WHILE);
   match(TokenType::OPENP);
   left = parseExpression();
@@ -296,7 +296,7 @@ Treenode* Parser::parseVar()
   match(TokenType::ID);
   if(token.getType() == TokenType::OPENSB)
   {
-    node = new ArrayNode();
+    node = new ArrayNode(token);
     match(TokenType::OPENSB);
     node->left = left;
     node->right = parseExpression();
@@ -364,7 +364,7 @@ Treenode* Parser::parseRelop()
     node = new NeNode(token);
     match(TokenType::NE);
   }
-  else throw SyntaxError();
+  else throw "ERROR";
   return node;
 }
 //--<additive-expression> -> <term> { <addop> <term> }
@@ -396,7 +396,7 @@ Treenode* Parser::parseAddop()
     match(TokenType::MINUS);
   }
   else
-    throw SyntaxError();
+    throw "ERROR";
   return node;
 }
 
@@ -428,7 +428,7 @@ Treenode* Parser::parseMulop()
       match(TokenType::DIVIDE);
   }
   else
-    throw SyntaxError();
+    throw "ERROR";
   return node;
 }
 //<factor>        -> OPENP <expression> CLOSEP | <var> | NUM
@@ -455,17 +455,18 @@ Treenode* Parser::parseFactor()
     return node;
   }
   else
-    return SyntaxError();
+    throw "ERROR";
 }
 
-void Parser::match(Token expectedToken)
+void Parser::match(TokenType expectedToken)
 {
-  if(token==expectedToken)
-    token = scanner.getNextToken();
+  if(token.getType()==expectedToken){
+	  Token t;
+	  if (scanner.getNextToken(t)){
+		  token = t;
+	  }
+	  else throw "END OF INPUT";
+  }
   else
-    return SyntaxError();
+    throw "ERROR";
 }
-
-
-
-

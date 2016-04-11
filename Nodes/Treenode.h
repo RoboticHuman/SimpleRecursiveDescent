@@ -15,5 +15,9 @@ public:
     this->left = left;
     this->right = right;
   }
+  Treenode (){
+	  this->left = nullptr;
+	  this->right = nullptr;
+  }
   virtual ~Treenode();
 };
