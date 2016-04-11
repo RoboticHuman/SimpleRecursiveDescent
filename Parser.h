@@ -71,10 +71,6 @@ private:
       privateDumpSyntaxTree(root->left);
       privateDumpSyntaxTree(root->right);
     }
-    void privateDumpSyntaxTreeLevelOrder(Treenode* root)
-    {
-      
-    }
   }
 
 public:
@@ -89,7 +85,7 @@ public:
     if (scanner.getNextToken(t)){
         token = t;
     }
-    
+
   }
 
   Scanner getScanner (){
